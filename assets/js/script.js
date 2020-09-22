@@ -1,18 +1,23 @@
 
 //create a new task item
-var buttonEl = document.querySelector("#save-task");
+var formEl = document.querySelector("#task-form");
 //console.log(buttonEl);
 //El suffix identifies this as a DOM element
 //style the new task item
 var tasksToDoEl = document.querySelector("#tasks-to-do");
 
-var createTaskHandler = function () {
+var createTaskHandler = function (event) {
+
+    //instructing the browzser to not carry its default behavior
+    event.preventDefault();
+
+
     var listItemEl = document.createElement("li");
     listItemEl.className = "task-item";
     listItemEl.textContent = "This is a new task.";
     tasksToDoEl.appendChild(listItemEl);
-}
-buttonEl.addEventListener("click", createTaskHandler); {
+};
+formEl.addEventListener("submit", createTaskHandler); {
     var listItemEl = document.createElement("li");
     //add the text
     listItemEl.className = "task-item";
