@@ -72,6 +72,7 @@ var createTaskEl = function (taskDataObj) {
     tasksToDoEl.appendChild(listItemEl);
     taskDataObj.id = taskIdCounter;
     tasks.push(taskDataObj);
+    localStorage.setItem("tasks", tasks);
     // increase task counter for next unique id
     taskIdCounter++;
 
@@ -174,6 +175,7 @@ var taskStatusChangeHandler = function (event) {
         }
     }
     console.log(tasks);
+    localStorage.setItem("tasks", tasks);
 };
 
 var editTask = function (taskId) {
@@ -198,6 +200,18 @@ var deleteTask = function (taskId) {
     console.log(taskId);
     var taskSelected = document.querySelector(".task-item[data-task-id='" + taskId + "']");
     taskSelected.remove();
+    // create new array to hold updated list of tasks
+    var updatedTaskArr = [];
+    // loop through current tasks
+    for (var i = 0; i < tasks.length; i++) {
+        // if tasks[i].id doesn't match the value of taskId, let's keep that task and push it into the new array
+        if (tasks[i].id !== parseInt(taskId)) {
+            updatedTaskArr.push(tasks[i]);
+        }
+    }
+    // reassign tasks array to be the same as updatedTaskArr
+    tasks = updatedTaskArr;
+    localStorage.setItem("tasks", tasks);
 };
 
 var dropTaskHandler = function (event) {
@@ -229,7 +243,6 @@ var dropTaskHandler = function (event) {
         default:
             console.log("Something went wrong!");
     }
-
     dropZoneEl.appendChild(draggableElement);
     // loop through tasks array to find and update the updated task's status
     for (var i = 0; i < tasks.length; i++) {
@@ -237,9 +250,8 @@ var dropTaskHandler = function (event) {
             tasks[i].status = statusSelectEl.value.toLowerCase();
         }
     }
-
     console.log(tasks);
-
+    localStorage.setItem("tasks", tasks);
 
 };
 
@@ -272,7 +284,9 @@ var dragLeaveHandler = function (event) {
     }
 };
 
-
+var saveTasks = function () {
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+}
 //add new task
 formEl.addEventListener("submit", taskFormHandler);
 //edit and delete 
